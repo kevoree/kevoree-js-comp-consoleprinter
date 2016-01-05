@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
     grunt.initConfig({
         // retrieve your project package.json
@@ -22,10 +22,16 @@ module.exports = function (grunt) {
         browserify: {
             browser: {
                 options: {
-                    alias: [ '<%= pkg.main %>:<%= pkg.name %>' ]
+                    alias: ['<%= pkg.main %>:<%= pkg.name %>']
                 },
                 src: [],
                 dest: 'browser/<%= pkg.name %>.js'
+            }
+        },
+
+        kevoree: {
+            options: {
+                browserDevMode: true
             }
         },
 
@@ -50,7 +56,15 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', 'build');
     grunt.registerTask('build', ['kevoree_genmodel', 'browser']);
+    grunt.registerTask('build:dev', ['kevoree_genmodel', 'browser:dev']);
     grunt.registerTask('publish', ['kevoree_registry']);
-    grunt.registerTask('kev', ['kevoree']);
+    grunt.registerTask('kev', 'Run using KevScript', function() {
+        grunt.tasks([
+            'kevoree_genmodel',
+            'browserify',
+            'kevoree'
+        ]);
+    });
     grunt.registerTask('browser', ['browserify', 'uglify']);
+    grunt.registerTask('browser:dev', 'browserify');
 };
