@@ -1,70 +1,72 @@
-module.exports = function(grunt) {
+'use strict';
 
-    grunt.initConfig({
-        // retrieve your project package.json
-        pkg: grunt.file.readJSON('package.json'),
+module.exports = function (grunt) {
 
-        // creates kevlib.json which represents your project Kevoree model
-        // by parsing your pkg.main entry point
-        kevoree_genmodel: {
-            main: {
-                options: {
-                    quiet: false,
-                    verbose: true
-                }
-            }
-        },
+  grunt.initConfig({
+    // retrieve your project package.json
+    pkg: grunt.file.readJSON('package.json'),
 
-        kevoree_registry: {
-            src: 'kevlib.json'
-        },
+    kevoree: {
+      main: {
+        runtime: 'next'
+      }
+    },
 
-        browserify: {
-            browser: {
-                options: {
-                    alias: ['<%= pkg.main %>:<%= pkg.name %>']
-                },
-                src: [],
-                dest: 'browser/<%= pkg.name %>.js'
-            }
-        },
-
-        kevoree: {
-            options: {
-                browserDevMode: true
-            }
-        },
-
-        uglify: {
-            options: {
-                mangle: {
-                    except: ['_super']
-                }
-            },
-            browser: {
-                src: '<%= browserify.browser.dest %>',
-                dest: 'browser/<%= pkg.name %>.min.js'
-            }
+    // creates kevlib.json which represents your project Kevoree model
+    // by parsing your pkg.main entry point
+    kevoree_genmodel: {
+      main: {
+        options: {
+          quiet: false,
+          verbose: true
         }
-    });
+      }
+    },
 
-    grunt.loadNpmTasks('grunt-kevoree');
-    grunt.loadNpmTasks('grunt-kevoree-genmodel');
-    grunt.loadNpmTasks('grunt-kevoree-registry');
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    kevoree_registry: {
+      src: 'kevlib.json'
+    },
 
-    grunt.registerTask('default', 'build');
-    grunt.registerTask('build', ['kevoree_genmodel', 'browser']);
-    grunt.registerTask('build:dev', ['kevoree_genmodel', 'browser:dev']);
-    grunt.registerTask('publish', ['kevoree_registry']);
-    grunt.registerTask('kev', 'Run using KevScript', function() {
-        grunt.tasks([
-            'kevoree_genmodel',
-            'browserify',
-            'kevoree'
-        ]);
-    });
-    grunt.registerTask('browser', ['browserify', 'uglify']);
-    grunt.registerTask('browser:dev', 'browserify');
+    browserify: {
+      browser: {
+        options: {
+          external: ['kevoree-library'],
+          alias: ['<%= pkg.main %>:<%= pkg.name %>']
+        },
+        src: ['<%= pkg.main %>'],
+        dest: 'browser/<%= pkg.name %>.js'
+      }
+    },
+
+    uglify: {
+      options: {
+        mangle: {
+          except: ['_super']
+        }
+      },
+      browser: {
+        src: '<%= browserify.browser.dest %>',
+        dest: 'browser/<%= pkg.name %>.min.js'
+      }
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-kevoree');
+  grunt.loadNpmTasks('grunt-kevoree-genmodel');
+  grunt.loadNpmTasks('grunt-kevoree-registry');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  grunt.registerTask('default', 'build');
+  grunt.registerTask('build', 'Build Kevoree module', function () {
+    if (process.env.KEVOREE_RUNTIME !== 'dev') {
+      grunt.tasks([
+                'kevoree_genmodel',
+                'browser'
+            ]);
+    }
+  });
+  grunt.registerTask('publish', ['kevoree_genmodel', 'kevoree_registry']);
+  grunt.registerTask('kev', ['kevoree_genmodel', 'kevoree']);
+  grunt.registerTask('browser', ['browserify', 'uglify']);
 };
