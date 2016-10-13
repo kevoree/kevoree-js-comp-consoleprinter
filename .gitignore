@@ -33,3 +33,6 @@ node_modules
 # Kevoree JS
 kevlib.json
 browser/kevoree-comp-consoleprinter*.js
+
+# Yarn
+yarn.lock
