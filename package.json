@@ -1,6 +1,6 @@
 {
   "name": "kevoree-comp-consoleprinter",
-  "version": "5.3.3-alpha.3",
+  "version": "5.3.3-alpha.4",
   "main": "./dist/ConsolePrinter.js",
   "kevoree": {
     "namespace": "kevoree",

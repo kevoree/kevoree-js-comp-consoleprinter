@@ -25,18 +25,18 @@ var ConsolePrinterUIDecorator = ConsolePrinter.extend({
       },
 
       onClear: function () {
-        this.uiState.messages = [];
-        this.setState({ messages: this.uiState.messages });
+        this.props.instance.uiState.messages = [];
+        this.setState({ messages: this.props.instance.uiState.messages });
       },
 
       onMaxLineChange: function (event) {
-        this.uiState.maxLines = event.target.value;
-        var currLength = this.uiState.messages.length;
-        if (this.uiState.maxLines < currLength) {
-          this.uiState.messages = [].concat(this.uiState.messages);
-          this.uiState.messages.splice(0, currLength - (currLength - this.uiState.maxLines));
+        this.props.instance.uiState.maxLines = event.target.value;
+        var currLength = this.props.instance.uiState.messages.length;
+        if (this.props.instance.uiState.maxLines < currLength) {
+          this.props.instance.uiState.messages = [].concat(this.props.instance.uiState.messages);
+          this.props.instance.uiState.messages.splice(0, currLength - (currLength - this.props.instance.uiState.maxLines));
         }
-        this.setState(this.uiState);
+        this.setState(this.props.instance.uiState);
       },
 
       render: function () {
