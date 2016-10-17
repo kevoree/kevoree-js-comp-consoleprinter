@@ -19,24 +19,24 @@ var ConsolePrinterUIDecorator = ConsolePrinter.extend({
   },
 
   uiFactory: function () {
-    return React.createClass({
+    var ReactConsolePrinter = React.createClass({
       getInitialState: function () {
         return this.props.instance.uiState;
       },
 
       onClear: function () {
-        this.setState({ messages: [] });
+        this.uiState.messages = [];
+        this.setState({ messages: this.uiState.messages });
       },
 
       onMaxLineChange: function (event) {
-        var newState = { maxLines: event.target.value };
-        var currLength = this.state.messages.length;
-        if (newState.maxLines < currLength) {
-          var newMessages = [].concat(this.state.messages);
-          newMessages.splice(0, currLength - (currLength - newState.maxLines));
-          newState.messages = newMessages;
+        this.uiState.maxLines = event.target.value;
+        var currLength = this.uiState.messages.length;
+        if (this.uiState.maxLines < currLength) {
+          this.uiState.messages = [].concat(this.uiState.messages);
+          this.uiState.messages.splice(0, currLength - (currLength - this.uiState.maxLines));
         }
-        this.setState(newState);
+        this.setState(this.uiState);
       },
 
       render: function () {
@@ -71,6 +71,12 @@ var ConsolePrinterUIDecorator = ConsolePrinter.extend({
         );
       }
     });
+
+    ReactConsolePrinter.propTypes = {
+      instance: React.PropTypes.object.isRequired
+    };
+
+    return ReactConsolePrinter;
   }
 });
 
