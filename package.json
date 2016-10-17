@@ -1,7 +1,7 @@
 {
   "name": "kevoree-comp-consoleprinter",
-  "version": "5.3.3-alpha.1",
-  "main": "./dist/server/ConsolePrinter.js",
+  "version": "5.3.3-alpha.2",
+  "main": "./dist/ConsolePrinter.js",
   "kevoree": {
     "namespace": "kevoree",
     "browser": "./src/browser/main.js"
@@ -30,16 +30,14 @@
     "eslint-plugin-react": "^6.4.1",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
-    "grunt-browserify": "^5.0.0",
-    "grunt-contrib-uglify": "^0.8.0",
     "grunt-kevoree": "^5.9.0-alpha.2",
     "grunt-kevoree-genmodel": "^3.0.0",
     "grunt-kevoree-registry": "^3.0.1",
     "grunt-webpack": "^1.0.18",
     "json-loader": "^0.5.4",
     "load-grunt-tasks": "^3.5.2",
-    "postcss-loader": "^0.13.0",
     "react": "^15.3.2",
+    "standard": "^8.4.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2"
@@ -62,8 +60,13 @@
   },
   "eslintConfig": {
     "extends": [
-      "standard-jsx"
+      "standard", "standard-jsx"
     ],
+    "rules": {
+      "semi": 0,
+      "space-before-function-paren": 0,
+      "array-callback-return": 2
+    },
     "globals": {
       "React": true,
       "KevoreeModuleLoader": true

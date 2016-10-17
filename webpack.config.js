@@ -31,8 +31,7 @@ var config = {
             modules: true,
             localIdentName: DEV ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:3]',
             minimize: !DEV
-          }),
-          'postcss-loader'
+          })
         ]
       }
     ]

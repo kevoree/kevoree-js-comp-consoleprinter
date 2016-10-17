@@ -1,18 +1,24 @@
 'use strict';
 
+var pkg = require('./package.json');
 var webpackConfig = require('./webpack.config');
 
 module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
-    // retrieve your project package.json
-    pkg: grunt.file.readJSON('package.json'),
-
     babel: {
-      options: this.pkg.babel,
-      dist: 'dist/'
-    }
+      options: pkg.babel,
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'src',
+          src: ['**/*.js'],
+          dest: 'dist',
+          ext: '.js'
+        }]
+      }
+    },
 
     // creates kevlib.json which represents your project Kevoree model
     // by parsing your pkg.main entry point
@@ -45,7 +51,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default', 'build');
-  grunt.registerTask('build', ['babel', 'kevoree_genmodel', 'browser']);
+  grunt.registerTask('build', ['babel', 'kevoree_genmodel', 'webpack']);
   grunt.registerTask('kev', ['build', 'kevoree']);
   grunt.registerTask('publish', ['build', 'kevoree_registry']);
 };
