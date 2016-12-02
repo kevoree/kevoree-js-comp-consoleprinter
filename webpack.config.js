@@ -22,17 +22,6 @@ var config = {
       {
         test: /\.json$/,
         loader: 'json'
-      },
-      {
-        test: /\.css/,
-        loaders: [
-          'style-loader',
-          'css-loader?' + JSON.stringify({
-            modules: true,
-            localIdentName: DEV ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:3]',
-            minimize: !DEV
-          })
-        ]
       }
     ]
   },
